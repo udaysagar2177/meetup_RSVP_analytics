@@ -1,4 +1,5 @@
 #!/bin/bash
+set -xe
 
 trap "exit" SIGINT SIGTERM
 mkdir -p /var/docker-share/logs
@@ -16,16 +17,30 @@ mysql -h "localhost" -u root -e \
 
 mysql -h "localhost" -u spark --password=spark -e "CREATE DATABASE MeetupRsvps;"
 
+mysql -h "localhost" -u spark --password=spark -e "CREATE TABLE MeetupRsvps.EventData (
+  visibility VARCHAR(10),
+  event_id VARCHAR(100),
+  event_name VARCHAR(1000),
+  event_time TIMESTAMP,
+  group_topics VARCHAR(1000),
+  group_city VARCHAR(100),
+  group_country VARCHAR(10),
+  group_name VARCHAR(1000),
+  group_lon Decimal(9,6),
+  group_lat Decimal(9,6),
+  PRIMARY KEY (event_id)
+  )
+  "
+
+mysql -h "localhost" -u spark --password=spark -e "CREATE TABLE MeetupRsvps.RsvpData (
+  rsvp_time TIMESTAMP,
+  event_id VARCHAR(100)
+  )
+  "
+
 mysql -h "localhost" -u spark --password=spark MeetupRsvps -e \
   "SET GLOBAL query_cache_size = 16777216"
 
-mysql -h "localhost" -u spark --password=spark MeetupRsvps -e \
-  "CREATE TABLE Persons ( PersonID int);
-  INSERT INTO Persons VALUES ( 1 );
-  INSERT INTO Persons VALUES ( 2 );"
-
 while true; do
   sleep 1
-  mysql -h "localhost" -u spark --password=spark MeetupRsvps -e \
-    "INSERT INTO Persons VALUES (3)"
 done
