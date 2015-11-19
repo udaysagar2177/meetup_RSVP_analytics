@@ -38,9 +38,6 @@ mysql -h "localhost" -u spark --password=spark -e "CREATE TABLE MeetupRsvps.Rsvp
   )
   "
 
-mysql -h "localhost" -u spark --password=spark MeetupRsvps -e \
-  "SET GLOBAL query_cache_size = 16777216"
-
 while true; do
   sleep 1
 done
