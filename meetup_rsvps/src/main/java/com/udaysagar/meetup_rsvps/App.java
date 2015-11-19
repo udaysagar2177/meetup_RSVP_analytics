@@ -2,6 +2,7 @@ package com.udaysagar.meetup_rsvps;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -64,7 +65,7 @@ public class App {
 								System.out.println("Unable to get DB connection");
 								return;
 							}
-							insertRsvpsIntoDatabase(rsvpMap);							
+							insertRsvpsIntoDatabase(connection, rsvpMap);							
 							connection.close();
 						}
 					});
@@ -77,7 +78,7 @@ public class App {
 		jssc.awaitTermination();
 	}
 	
-	private static void insertRsvpsIntoDatabase(Map rsvpMap) {
+	private static void insertRsvpsIntoDatabase(Connection connection, Map rsvpMap) {
 		//System.out.println("ready to insert records");
 		String groupTopics = getGroupTopics(rsvpMap);
 		
@@ -91,10 +92,10 @@ public class App {
 				+ groupTopics+ "\", \""
 				+ ((Map) rsvpMap.get("group")).get("group_city") + "\", \""
 				+ ((Map) rsvpMap.get("group")).get("group_country") + "\", \""
-				+ ((Map) rsvpMap.get("group")).get("group_name") + "\", \""
-				+ ((Map) rsvpMap.get("group")).get("group_lon") + "\", \""
+				+ ((Map) rsvpMap.get("group")).get("group_name") + "\", "
+				+ ((Map) rsvpMap.get("group")).get("group_lon") + ", "
 				+ ((Map) rsvpMap.get("group")).get("group_lat")
-				+ "\")";
+				+ ")";
 		
 		String insertRSVP  = "INSERT INTO RsvpData"
 				+ "(rsvp_time, event_id)"
@@ -103,8 +104,24 @@ public class App {
 				+ ((Map) rsvpMap.get("event")).get("event_id")
 				+ "\")";
 		
-		System.out.println(insertRSVP);
-		System.out.println(insertEvent);
+		try {
+			
+			// Insert Event Data
+			PreparedStatement preparedStatement = connection.prepareStatement(insertEvent);
+			preparedStatement.executeUpdate();
+			
+			// Insert RSVP Data
+			preparedStatement = connection.prepareStatement(insertRSVP);
+			preparedStatement.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println("SQL Exception in Event or RSVP :");
+			System.out.println(insertEvent);
+			System.out.println(insertRSVP);
+			e.printStackTrace();
+		}
+		
+
 	}
 	
 	private static String getGroupTopics(Map<String, Object> rsvpMap) {
