@@ -38,6 +38,8 @@ mysql -h "localhost" -u spark --password=spark -e "CREATE TABLE MeetupRsvps.Rsvp
   )
   "
 
+/opt/spark/bin/spark-submit --class com.udaysagar.meetup_rsvps.App meetup_rsvps-jar-with-dependencies.jar
+
 while true; do
   sleep 1
 done

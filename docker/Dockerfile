@@ -31,5 +31,9 @@ RUN wget http://d3kbcqa49mib13.cloudfront.net/spark-1.5.2-bin-hadoop2.6.tgz
 RUN tar -xvzf spark-1.5.2-bin-hadoop2.6.tgz
 RUN mv spark-1.5.2-bin-hadoop2.6 /opt/spark
 
+ADD meetup_rsvps-jar-with-dependencies.jar /opt/
+
 ADD run.sh /opt/
-CMD ./opt/run.sh
+
+WORKDIR /opt/
+CMD /opt/run.sh
