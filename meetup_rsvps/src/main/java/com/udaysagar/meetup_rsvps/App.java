@@ -43,18 +43,10 @@ public class App {
 				return false;
 			}
 		});
-		
-		// Save the RDD in memory for future calculations
-		// rsvpsYes.persist(StorageLevel.MEMORY_ONLY());
-		
 		/*
 		 * Spark is useful when the input data coming is huge (in future).
 		 */
 		
-		/*
-		 * Trim the data and insert into the database
-		 */
-		//rsvpsYes.print();
 		rsvpsYes.foreachRDD(
 			new Function<JavaRDD<Map>, Void>() {
 				public Void call(JavaRDD<Map> rsvpRDD) throws Exception {
@@ -65,7 +57,7 @@ public class App {
 								System.out.println("Unable to get DB connection");
 								return;
 							}
-							insertRsvpsIntoDatabase(connection, rsvpMap);							
+							//insertRsvpsIntoDatabase(connection, rsvpMap);							
 							connection.close();
 						}
 					});
