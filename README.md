@@ -1,5 +1,11 @@
 # meetup_RSVP_analytics
 
+### Run
+
+1. Get Docker on your machine
+2. Change the database location in the spark application inside meetup_rsvps folder and also in docker/run.sh
+3. Run ./Container.sh
+
 ### Results:
 
 ##### Countries receiving most number of attendees filtered by topic - Filled Map
