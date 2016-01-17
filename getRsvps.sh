@@ -1,8 +1,11 @@
 #!/bin/bash
+# Bash script to get Rsvps from http://stream.meetup.com/2/rsvps
+# Received RSVPs are stored in $datafilename
+# Log for script is written into $logfilename
 
-count=0
-datafilename="meetup_data1.txt"
-logfilename="meetup_data1_log.txt"
+count=0 # keeps tract of curl attempts
+datafilename="meetup_data.txt"
+logfilename="meetup_data_log.txt"
 
 while true
 do
